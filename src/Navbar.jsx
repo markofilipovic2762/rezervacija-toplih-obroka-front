@@ -37,8 +37,13 @@ const Navbar = () => {
   // }
 
   return (
-    <nav className="bg-lime-400 font-sans xl:text-xl 2xl:text-5xl backdrop-blur-sm shadow-xl text-slate-300 p-6 w-full absolute top-0 flex flex-row justify-center items-center gap-4">
-        <span className="text-blue-950 font-bold">Rezervacija toplih obroka</span>
+    <nav
+      style={{ boxShadow: "0 0 5px 3px #1c263c" }}
+      className="bg-[#9cff00] border-b-2 border-[#1c263c] font-sans xl:text-xl 2xl:text-5xl backdrop-blur-sm shadow-xl text-slate-300 p-6 w-full absolute top-0 flex flex-row justify-center items-center gap-4"
+    >
+      <span className="text-[#1c263c] font-bold">
+        Rezervacija toplih obroka
+      </span>
     </nav>
   );
 };

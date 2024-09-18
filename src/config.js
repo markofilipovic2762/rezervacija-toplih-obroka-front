@@ -1,9 +1,13 @@
 import axios from "axios";
 
-export const api = () => axios.create({
-    baseURL: "http://10.21.22.254:9000",
+const testniURL = "http://127.0.0.1:8000";
+const prodURL = "http://10.21.22.254:9000";
+
+export const api = () =>
+  axios.create({
+    baseURL: prodURL,
     timeout: 5000,
     headers: {
-        "Content-Type": "application/json",
+      "Content-Type": "application/json",
     },
-})
+  });

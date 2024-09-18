@@ -16,6 +16,11 @@ const programeri = [
   { mbr: 48078, ime: "Andrija Novković" },
 ];
 
+const trpezarije = [
+  { mail: "trpezarijakapitalna@hbisserbia.rs", ime: "Kapitalna" },
+  { mail: "trpezarijatopionica@hbisserbia.rs", ime: "Topionica" },
+];
+
 const vremena = ["09:30", "09:45", "10:00", "10:15", "10:30"];
 
 function App() {
@@ -28,6 +33,9 @@ function App() {
     vreme: "",
   });
   const [rezervacije, setRezervacije] = useState([]);
+  const [trpezarija, setTrpezarija] = useState({
+    email: "trpezarijakapitalna@hbisserbia.rs",
+  });
 
   const obrociZaDan =
     pocetniData?.find((item) => item.dan === rezervacija.dan)?.topli_obroci ||
@@ -40,6 +48,7 @@ function App() {
   }, []);
 
   console.log(pocetniData);
+  console.log(trpezarija);
 
   const unesiRezervaciju = () => {
     if (
@@ -75,7 +84,7 @@ function App() {
       return;
     }
     api()
-      .post("/posalji", rezervacije)
+      .post("/posalji", { narudzbe: rezervacije, email: trpezarija })
       .then((res) => {
         if (res.status === 200) {
           MySwal.fire({
@@ -100,15 +109,24 @@ function App() {
     <>
       <Navbar />
       {/* bg-gradient-to-r from-indigo-400 to-cyan-400 */}
-      <main className="flex min-h-screen py-28 px-10 flex-row gap-7 text-2xl bg-gradient-to-r from-slate-300 to-slate-500">
+      <main
+        style={{
+          background: "rgb(156,255,0)",
+          background:
+            "radial-gradient(circle, rgba(156,255,0,1) 0%, rgba(28,38,60,1) 60%)",
+        }}
+        className="flex min-h-screen py-28 px-10 flex-row gap-7 text-2xl bg-gradient-to-tl from-lime-400 from-0% via-[#313c53] via-30% to-[#1c263c] to-70%"
+      >
+        {" "}
+        {/* bg-[#1c263c] */}
         <form
           //onSubmit={handleSubmit}
-          className="flex flex-col min-w-[30%] gap-4 xl:text-2xl text-gray-900 font-semibold"
+          className="flex flex-col min-w-[30%] gap-4 xl:text-2xl text-[#b6c0d2] font-semibold"
         >
           <div className="flex flex-col w-full gap-2">
             <label>Programeri:</label>
             <select
-              className="text-gray-800 p-1"
+              className="shadow-xl shadow-[#1c263c] text-[#b6c0d2] p-1 bg-[#313c53] border-[#9cff00] border-2 rounded-lg"
               name="ime"
               id="ime"
               value={rezervacija.ime}
@@ -133,7 +151,7 @@ function App() {
           <div className="flex flex-col w-full gap-3">
             <label>Datum:</label>
             <select
-              className="text-gray-800 p-1"
+              className="shadow-xl shadow-[#1c263c] text-[#b6c0d2] p-1 bg-[#313c53] border-[#9cff00] border-2 rounded-lg"
               id="dan"
               onChange={(e) =>
                 setRezervacija({ ...rezervacija, dan: e.target.value })
@@ -153,7 +171,7 @@ function App() {
           <div className="flex flex-col w-full gap-3">
             <label>Jelo:</label>
             <select
-              className="text-gray-800 p-1"
+              className="shadow-xl shadow-[#1c263c] text-[#b6c0d2] p-1 bg-[#313c53] border-[#9cff00] border-2 rounded-lg"
               id="jelo"
               name="jelo"
               value={rezervacija.jelo}
@@ -174,7 +192,7 @@ function App() {
           <div className="flex flex-col w-full gap-3">
             <label>Vreme:</label>
             <select
-              className="text-gray-800 p-1"
+              className="shadow-xl shadow-[#1c263c] text-[#b6c0d2] p-1 bg-[#313c53] border-[#9cff00] border-2 rounded-lg"
               id="vreme"
               name="vreme"
               value={rezervacija.vreme}
@@ -191,54 +209,76 @@ function App() {
               ))}
             </select>
           </div>
-
+          <div className="flex flex-col mt-10 w-full gap-3">
+            <label>Trepezarija:</label>
+            <select
+              className="shadow-xl shadow-[#1c263c] text-[#b6c0d2] p-1 bg-[#313c53] border-[#9cff00] border-2 rounded-lg"
+              id="trpezarija"
+              name="trpezarija"
+              value={trpezarija.email}
+              onChange={(e) => setTrpezarija({ email: e.target.value })}
+            >
+              {trpezarije.map((opt, index) => (
+                <option key={index} value={opt.mail}>
+                  {opt.ime}
+                </option>
+              ))}
+            </select>
+          </div>
           <button
             type="button"
-            className="bg-teal-400 text-gray-900 hover:bg-teal-600 border-2 border-lime-400 hover:border-white hover:text-white transition-all duration-300 font-bold py-2 px-4 rounded mt-10"
+            className="shadow-xl shadow-[#1c263c] bg-[#9cff00] text-[#1c263c] hover:bg-[#313c53] border-2 border-[#1c263c] hover:border-[#9cff00] hover:text-[#9cff00] transition-all duration-300 font-bold py-2 px-4 rounded-lg mt-10"
             onClick={unesiRezervaciju}
           >
-            Ubaci
+            Dodaj
           </button>
         </form>
         <div className="flex flex-col text-xl">
-          <table className="w-full table-fixed shadow-lg border-2">
+          <table
+            style={{
+              border: "2px solid #b6c0d2",
+              borderRadius: "var(--rounded-btn,0.5rem)",
+              overflow: "hidden",
+            }}
+            className="shadow-xl shadow-[#1c263c] w-full table-fixed  mt-[40px]"
+          >
             <thead>
-              <tr className="bg-teal-400">
-                <th className="p-2 w-[35%] text-center text-gray-700 font-bold uppercase border-r">
+              <tr className="bg-[#313c53]">
+                <th className="p-2 w-[35%] text-center text-[#b6c0d2] font-bold uppercase border-r border-[#b6c0d2]">
                   Ime i prezime
                 </th>
-                <th className="p-2 w-[15%] text-center text-gray-700 font-bold uppercase border-r">
+                <th className="p-2 w-[15%] text-center text-[#b6c0d2] font-bold uppercase border-r border-[#b6c0d2]">
                   Mbr
                 </th>
-                <th className="p-2 w-[30%] text-center text-gray-700 font-bold uppercase border-r">
+                <th className="p-2 w-[30%] text-center text-[#b6c0d2] font-bold uppercase border-r border-[#b6c0d2]">
                   Jelo
                 </th>
-                <th className="p-2 w-[30%] text-center text-gray-700 font-bold uppercase border-r">
+                <th className="p-2 w-[30%] text-center text-[#b6c0d2] font-bold uppercase border-r border-[#b6c0d2]">
                   Datum
                 </th>
-                <th className="p-2 w-[20%] text-center text-gray-700 font-bold uppercase">
+                <th className="p-2 w-[20%] text-center text-[#b6c0d2] font-bold uppercase">
                   Vreme
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-gray-100 backdrop-blur-[3px] text-blue-950 font-bold text-center text-md ">
+            <tbody className="bg-[#1c263c] text-[#9cff00] font-bold text-center text-md ">
               {rezervacije?.map((item, index) => {
                 console.log(item);
                 return (
                   <tr key={index}>
-                    <td className="py-4 px-6 border border-gray-300">
+                    <td className="py-4 px-6 border border-[#b6c0d2]">
                       {item.ime}
                     </td>
-                    <td className="py-4 px-6 border border-gray-300">
+                    <td className="py-4 px-6 border border-[#b6c0d2]">
                       {item.mbr}
                     </td>
-                    <td className="py-4 px-6 border border-gray-300">
+                    <td className="py-4 px-6 border border-[#b6c0d2]">
                       {item.jelo}
                     </td>
-                    <td className="py-4 px-6 border border-gray-300">
+                    <td className="py-4 px-6 border border-[#b6c0d2]">
                       {item.dan}
                     </td>
-                    <td className="py-4 px-6 border border-gray-300">
+                    <td className="py-4 px-6 border border-[#b6c0d2]">
                       {item.vreme}
                     </td>
                   </tr>
@@ -249,7 +289,7 @@ function App() {
           <div className="flex justify-center">
             <button
               onClick={posaljiRezervaciju}
-              className="bg-lime-400 border-2 border-transparent w-1/4 hover:border-lime-400 text-blue-950 font-bold py-2 px-4 rounded mt-10 transition ease-in-out hover:-translate-y-1 hover:scale-105 hover:bg-blue-900 hover:text-lime-400 duration-300"
+              className="shadow-xl shadow-[#1c263c] bg-[#9cff00] border-2 border-[#1c263c] w-1/4 hover:border-[#9cff00] text-[#1c263c] font-bold py-2 px-4 rounded-lg mt-10 transition ease-in hover:-translate-y-1 hover:scale-105 hover:bg-[#313c53] hover:text-[#9cff00] duration-300"
             >
               POŠALJI REZERVACIJU
             </button>
